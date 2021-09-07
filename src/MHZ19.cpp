@@ -545,7 +545,7 @@ void MHZ19::constructCommand(Command_Type commandtype, int inData)
     memcpy(this->storage.constructedCommand, asemblecommand, MHZ19_DATA_LEN);
 }
 
-void MHZ19::write(byte toSend[])
+void MHZ19::write(byte toSend[], bool flushSerial)
 {
     /* for print communications */
     if (this->storage.settings.printcomm == true)
@@ -554,8 +554,9 @@ void MHZ19::write(byte toSend[])
     /* transfer to buffer */
     mySerial->write(toSend, MHZ19_DATA_LEN); 
  
-    /* send */
-    mySerial->flush(); 
+    /* block until write is finished */
+    if (flushSerial)
+        mySerial->flush(); 
 }
 
 byte MHZ19::read(byte inBytes[MHZ19_DATA_LEN], Command_Type commandnumber)

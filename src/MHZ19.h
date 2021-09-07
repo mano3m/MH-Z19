@@ -183,7 +183,7 @@ class MHZ19
 	float getTemperatureOffset(bool force = true);
 
 	/* Sends commands to the sensor */
-	void write(byte toSend[]);
+	void write(byte toSend[], bool flushSerial = true);
 
 	/* Call retrieveData to retrieve values from the sensor and check return code */
 	byte read(byte inBytes[9], Command_Type commandnumber);
