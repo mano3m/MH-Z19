@@ -63,7 +63,7 @@ class MHZ19
  
 	/*########################-Get Functions-##########################*/
 
-	/* request CO2 values, 2 types of CO2 can be returned, isLimted = true (command 134) and is Limited = false (command 133) */
+	/* request CO2 values, 2 types of CO2 can be returned, isunLimted = true (command 133) and is unLimited = false (command 134) */
 	int getCO2(bool isunLimited = true, bool force = true);
 
 	/* returns the "raw" CO2 value of unknown units */
@@ -72,7 +72,7 @@ class MHZ19
 	/* returns Raw CO2 value as a % of transmittance */		//<--- needs work to understand
 	float getTransmittance(bool force = true);
 
-	/*  returns temperature using command 134 or 135 if isFloat = true */
+	/*  returns temperature using command 134 or 133 if isFloat = true */
 	float getTemperature(bool isFloat = false, bool force = true);
 	
 	/* reads range using command 153 */
