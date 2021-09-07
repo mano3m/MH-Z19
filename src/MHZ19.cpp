@@ -26,7 +26,7 @@ byte Commands[14] = {
 void MHZ19::begin(Stream &serial) 
 {  
     mySerial = &serial;    
-    mySerial.setTimeout(TIMEOUT_PERIOD);
+    mySerial->setTimeout(TIMEOUT_PERIOD);
 
     /* establish connection */
     verify();
@@ -602,7 +602,7 @@ byte MHZ19::read(byte inBytes[MHZ19_DATA_LEN], Command_Type commandnumber)
     this->errorCode = RESULT_NULL;
     
     /* read buffer until timeout */
-    if (mySerial->readBytes(inBytes, MHZ19_DATA_LEN); != MHZ19_DATA_LEN) {
+    if (mySerial->readBytes(inBytes, MHZ19_DATA_LEN) != MHZ19_DATA_LEN) {
         #if defined (ESP32) && (MHZ19_ERRORS) 
           ESP_LOGW(TAG_MHZ19, "Timed out waiting for response");    
         #elif MHZ19_ERRORS
