@@ -350,6 +350,39 @@ bool MHZ19::getABC()
         return 1;
 }
 
+/*######################-Non blocking Functions-########################*/
+	
+int MHZ19::requestData(bool isunLimited)
+{
+    /* construct command */
+    if(isunLimited)
+        constructCommand(CO2UNLIM);
+    else
+        constructCommand(CO2LIM);
+
+    /* write to serial without flush */
+    write(this->storage.constructedCommand, false);
+}
+	
+bool MHZ19::responseReady(bool isunLimited)
+{
+  if (mySerial->available() >= MHZ19_DATA_LEN)
+  {
+    /*return response */
+    if(isunLimited)
+        handleResponse(CO2UNLIM);
+    else
+        handleResponse(CO2LIM);
+
+    /* Check if ABC_OFF needs to run */
+    ABCCheck();
+
+    return true;
+  }
+  
+  return false;
+}
+
 /*######################-Utility Functions-########################*/
 
 void MHZ19::verify()

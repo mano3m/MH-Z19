@@ -99,6 +99,14 @@ class MHZ19
 	/* returns last recorded response from device using command 162 */
 	byte getLastResponse(byte bytenum);
 
+	/*######################-Non blocking Functions-########################*/
+	
+	/* request data non-blocking, 2 types of CO2 can be returned, isunLimted = true (command 133) and is unLimited = false (command 134) */	
+	int requestData(bool isunLimited = false);
+	
+	/* non blocking function to be called from loop. returns true if requested data is ready. Call getCO2 or getTemperature with force = false to get results. */
+	bool responseReady(bool isunLimited = false);
+
 	/*######################-Utility Functions-########################*/
 
 	/* ensure communication is working (included in begin())*/
@@ -168,7 +176,7 @@ class MHZ19
 
 	} storage;
 
-	/*######################-Inernal Functions-########################*/
+	/*######################-Internal Functions-########################*/
 
 	/* Coordinates  sending, constructing and recieving commands */
 	void provisioning(Command_Type commandtype, int inData = 0);
