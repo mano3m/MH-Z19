@@ -13,7 +13,7 @@
 
 #define TEMP_ADJUST 38			// This is the value used to adjust the temeperature.
 								// Older datsheets use 40, however is likely incorrect.
-#define TIMEOUT_PERIOD 500		// Time out period for response (ms)
+#define TIMEOUT_PERIOD 1500		// Time out period for response (ms)
 
 #define DEFAULT_RANGE 2000		// For range function (sensor works best in this range)
 
