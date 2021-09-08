@@ -26,7 +26,6 @@ byte Commands[14] = {
 void MHZ19::begin(Stream &serial) 
 {  
     mySerial = &serial;    
-    mySerial->setTimeout(TIMEOUT_PERIOD);
 
     /* establish connection */
     verify();
@@ -595,25 +594,41 @@ void MHZ19::write(byte toSend[], bool flushSerial)
 
 byte MHZ19::read(byte inBytes[MHZ19_DATA_LEN], Command_Type commandnumber)
 {
+    /* loop escape */
+    unsigned long timeStamp = millis();
+
     /* prepare memory array with unsigned chars of 0 */
     memset(inBytes, 0, MHZ19_DATA_LEN);
 
     /* prepare errorCode */
     this->errorCode = RESULT_NULL;
     
-    /* read buffer until timeout */
-    if (mySerial->readBytes(inBytes, MHZ19_DATA_LEN) != MHZ19_DATA_LEN) {
-        #if defined (ESP32) && (MHZ19_ERRORS) 
-          ESP_LOGW(TAG_MHZ19, "Timed out waiting for response");    
-        #elif MHZ19_ERRORS
-          Serial.println("!Error: Timed out waiting for response.");
-        #endif  
+    /* wait until we have exactly the 9 bytes reply (certain controllers call read() too fast) */
+    while (mySerial->available() < MHZ19_DATA_LEN)
+    {
+        if (millis() - timeStamp >= TIMEOUT_PERIOD) 
+        {
+            #if defined (ESP32) && (MHZ19_ERRORS) 
+            ESP_LOGW(TAG_MHZ19, "Timed out waiting for response");    
+            #elif MHZ19_ERRORS
+            Serial.println("!Error: Timed out waiting for response");
+            #endif  
 
-        this->errorCode = RESULT_TIMEOUT;
+            this->errorCode = RESULT_TIMEOUT;
 
-        //return error condition
-        return RESULT_TIMEOUT;           
+            /* clear incomplete 9 byte values, limit is finite */
+            cleanUp(mySerial->available());
+
+	    //return error condition
+            return RESULT_TIMEOUT;
+        }
     }
+
+    /* response recieved, read buffer */
+    mySerial->readBytes(inBytes, MHZ19_DATA_LEN);
+
+    if (this->errorCode == RESULT_TIMEOUT)
+        return this->errorCode;
 
     byte crc = getCRC(inBytes);
 
