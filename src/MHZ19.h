@@ -7,6 +7,7 @@
 
 #ifdef ESP32
 #include "esp32-hal-log.h"
+#define TAG_MHZ19 "MH-Z19"
 #endif
 
 #define MHZ19_ERRORS 1			// Set to 0 to disable error prints
@@ -39,7 +40,7 @@ class MHZ19
   public:
 	/*###########################-Variables-##########################*/
 
-	/* Holds last recieved errorcode from recieveResponse() */
+	/* Holds last received errorcode from recieveResponse() */
 	byte errorCode;
 
 	/* for keeping track of the ABC run interval */
