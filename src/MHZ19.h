@@ -102,7 +102,7 @@ class MHZ19
 	/*######################-Non blocking Functions-########################*/
 	
 	/* request data non-blocking, 2 types of CO2 can be returned, isunLimted = true (command 133) and is unLimited = false (command 134) */	
-	int requestData(bool isunLimited = true);
+	void requestData(bool isunLimited = true);
 	
 	/* non blocking function to be called from loop. returns true if requested data is ready. Call getCO2 or getTemperature with force = false to get results. */
 	bool responseReady(bool isunLimited = true);

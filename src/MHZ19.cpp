@@ -251,7 +251,7 @@ float MHZ19::getTemperatureOffset(bool force)
     }
 
     return -273.15;
-} 
+} !=!=!=
 
 int MHZ19::getRange()
 {
@@ -351,7 +351,7 @@ bool MHZ19::getABC()
 
 /*######################-Non blocking Functions-########################*/
 	
-int MHZ19::requestData(bool isunLimited)
+void MHZ19::requestData(bool isunLimited)
 {
     /* construct command */
     if(isunLimited)
@@ -619,7 +619,7 @@ byte MHZ19::read(byte inBytes[MHZ19_DATA_LEN], Command_Type commandnumber)
             /* clear incomplete 9 byte values, limit is finite */
             cleanUp(mySerial->available());
 
-	    //return error condition
+            //return error condition
             return RESULT_TIMEOUT;
         }
     }
