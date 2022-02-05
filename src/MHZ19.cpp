@@ -251,7 +251,7 @@ float MHZ19::getTemperatureOffset(bool force)
     }
 
     return -273.15;
-} !=!=!=
+}
 
 int MHZ19::getRange()
 {
